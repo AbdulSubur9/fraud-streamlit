@@ -29,4 +29,13 @@ if st.button("Check for Fraud"):
     # Fill in the values
     features[0, -1] = amount   # Amount
     features[0, 0] = hour      # Simulating 'V1' as Hour
-    features[0, 1:4]()
+    features[0, 1:4] = transaction_map[transaction_type]  # Simulating V2-V4 for type
+
+    # Predict
+    prediction = model.predict(features)[0]
+    confidence = model.predict_proba(features)[0][1] * 100  # Probability of fraud
+
+    if prediction == 1:
+        st.error(f"⚠️ Fraud Detected! Confidence: {confidence:.2f}%")
+    else:
+        st.success(f"✅ Safe Transaction. Fraud Risk: {confidence:.2f}%")
